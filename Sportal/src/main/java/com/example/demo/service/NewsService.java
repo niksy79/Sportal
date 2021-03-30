@@ -1,18 +1,14 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.newsdto.AddNewsRequestDTO;
-import com.example.demo.dto.newsdto.AddNewsResponseDTO;
-import com.example.demo.dto.newsdto.NewsByNameAndCategoryRequestDTO;
-import com.example.demo.dto.newsdto.NewsByTitleAndCategoryResponseDTO;
+import com.example.demo.dto.newsdto.NewsByTitleRequestDTO;
+import com.example.demo.dto.newsdto.NewsByTitleResponseDTO;
 import com.example.demo.model.News;
-import com.example.demo.model.User;
 import com.example.demo.model.repository.NewsRepository;
 import com.example.demo.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class NewsService {
@@ -22,11 +18,11 @@ public class NewsService {
     @Autowired
     UserRepository userRepository;
 
-    public NewsByTitleAndCategoryResponseDTO byTitleAndCategory(NewsByNameAndCategoryRequestDTO requestDTO){
-        News news = newsRepository.findByTitleAndCategory_Name(requestDTO.getTitle(), requestDTO.getCategoryName());
-        news.setOwner(userRepository.findById(news.getOwner().getId()).get());
+    public NewsByTitleResponseDTO byTitleAndCategory(NewsByTitleRequestDTO requestDTO){
 
-        return new NewsByTitleAndCategoryResponseDTO(news);
+        News oNews = newsRepository.findFirstByTitleIsContaining(requestDTO.getTitle());
+
+      return new NewsByTitleResponseDTO(oNews);
     }
 
 

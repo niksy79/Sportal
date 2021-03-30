@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NewsByNameAndCategoryRequestDTO {
+public class NewsByTitleRequestDTO {
 
     private String title;
-    private String categoryName;
+
 }

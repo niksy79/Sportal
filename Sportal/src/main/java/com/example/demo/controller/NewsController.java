@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.newsdto.AddNewsRequestDTO;
-import com.example.demo.dto.newsdto.AddNewsResponseDTO;
-import com.example.demo.dto.newsdto.NewsByNameAndCategoryRequestDTO;
-import com.example.demo.dto.newsdto.NewsByTitleAndCategoryResponseDTO;
+import com.example.demo.dto.newsdto.*;
 import com.example.demo.exeptions.AuthenticationException;
+import com.example.demo.exeptions.NotFoundException;
+import com.example.demo.model.Category;
 import com.example.demo.model.News;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.CategoryRepository;
@@ -45,9 +44,17 @@ public class NewsController extends AbstractController{
     }
 
     @GetMapping("/news")
-    public NewsByTitleAndCategoryResponseDTO searchByNameAndTitle(@RequestBody NewsByNameAndCategoryRequestDTO requestDTO){
-
+    public NewsByTitleResponseDTO searchByNameAndTitle(@RequestBody NewsByTitleRequestDTO requestDTO){
         return newsService.byTitleAndCategory(requestDTO);
+
+    }
+    @GetMapping("/news/{name}")
+    public NewsByCategoryDTO byCategory(@PathVariable String name){
+       Category c = categoryRepository.findByName(name);
+       if (c == null){
+           throw new NotFoundException("Category not found");
+       }
+       return new NewsByCategoryDTO(c);
 
     }
 
