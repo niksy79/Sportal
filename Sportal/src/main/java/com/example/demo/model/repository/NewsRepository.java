@@ -9,7 +9,14 @@ import java.util.List;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
-    News findFirstByTitleIsContaining(String title);
+
+
+    List<News> findByTitleContaining(String name);
+
     List<News> findByOrderByViewsDesc();
+
+
+
+
 
 }

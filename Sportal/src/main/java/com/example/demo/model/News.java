@@ -37,9 +37,8 @@ public class News {
 
 
     public News(AddNewsRequestDTO requestDTO){
-        id = requestDTO.getId();
         title = requestDTO.getTitle();
         content = requestDTO.getContent();
-        views = 0;
+
     }
 }

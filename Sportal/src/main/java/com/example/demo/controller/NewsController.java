@@ -21,7 +21,6 @@ public class NewsController extends AbstractController{
 
     @Autowired
     NewsService newsService;
-
     @Autowired
     SessionManager sessionManager;
     @Autowired
@@ -30,24 +29,18 @@ public class NewsController extends AbstractController{
     CategoryRepository categoryRepository;
 
 
-    @PutMapping("/news/{name}")
-    public AddNewsResponseDTO add(@RequestBody AddNewsRequestDTO requestDTO, @PathVariable String name, HttpSession ses){
+    @PutMapping("/news/add")
+    public AddNewsResponseDTO add(@RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
         User u = sessionManager.getLoggedUser(ses);
         if (!u.getIsAdmin()){
             throw new AuthenticationException("you do not have permission to write news");
         }
-        News news = new News(requestDTO);
-        news.setCategory(categoryRepository.findByName(name));
-        news.setCreatedAt(LocalDateTime.now());
-        news.setOwner(u);
-        newsRepository.save(news);
-        return new AddNewsResponseDTO(news);
+        return newsService.addNews(requestDTO, u);
     }
 
-    @PostMapping("/news")
-    public NewsByTitleResponseDTO getByName(@RequestBody NewsByTitleRequestDTO requestDTO){
-
-        return newsService.byTitleAndCategory(requestDTO);
+    @GetMapping("/news")
+    public List<NewsByTitleResponseDTO> getByName(@RequestBody NewsByTitleRequestDTO requestDTO){
+        return newsService.findByName(requestDTO);
 
     }
     @GetMapping("/news/{name}")
@@ -61,15 +54,16 @@ public class NewsController extends AbstractController{
 
     @GetMapping("/news/sort")
     public List<AllNewsWithViewsDTO> sortedByViews(){
-
         return newsService.viewsDTO();
     }
 
-
-
-
-
-
-
+    @GetMapping("/news/filter")
+    public List<NewsByCategoryAndTitleDTO> byNameAndCategory(@RequestBody NewsSearchRequestDTO requestDTO){
+        return newsService.filter(requestDTO);
+    }
+    @GetMapping("/news/read/news")
+    public ReadNewsDTO read(){
+        return newsService.readRandomNews();
+    }
 
 }

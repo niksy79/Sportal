@@ -7,13 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AddNewsRequestDTO {
+public class NewsSearchRequestDTO {
 
-    private String title;
-    private String content;
     private String categoryName;
-
-
-
-
+    private String title;
 }

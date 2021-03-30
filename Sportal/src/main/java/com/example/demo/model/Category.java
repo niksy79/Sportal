@@ -27,7 +27,11 @@ public class Category {
     @JsonBackReference
     private List<News> news;
 
-  /*  @OneToMany(mappedBy = "category")
+    public Category(String name) {
+        this.name = name;
+    }
+
+    /*  @OneToMany(mappedBy = "category")
     @JsonBackReference
     private List<News> news;*/
 }
