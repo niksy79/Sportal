@@ -10,5 +10,6 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, Long> {
 
     News findFirstByTitleIsContaining(String title);
+    List<News> findByOrderByViewsDesc();
 
 }

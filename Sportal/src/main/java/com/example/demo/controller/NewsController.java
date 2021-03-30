@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 public class NewsController extends AbstractController{
@@ -43,20 +44,28 @@ public class NewsController extends AbstractController{
         return new AddNewsResponseDTO(news);
     }
 
-    @GetMapping("/news")
-    public NewsByTitleResponseDTO searchByNameAndTitle(@RequestBody NewsByTitleRequestDTO requestDTO){
+    @PostMapping("/news")
+    public NewsByTitleResponseDTO getByName(@RequestBody NewsByTitleRequestDTO requestDTO){
+
         return newsService.byTitleAndCategory(requestDTO);
 
     }
     @GetMapping("/news/{name}")
-    public NewsByCategoryDTO byCategory(@PathVariable String name){
+    public NewsByCategoryDTO getByCategory(@PathVariable String name){
        Category c = categoryRepository.findByName(name);
        if (c == null){
            throw new NotFoundException("Category not found");
        }
        return new NewsByCategoryDTO(c);
-
     }
+
+    @GetMapping("/news/sort")
+    public List<AllNewsWithViewsDTO> sortedByViews(){
+
+        return newsService.viewsDTO();
+    }
+
+
 
 
 

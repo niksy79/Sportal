@@ -21,4 +21,5 @@ public class NewsByCategoryDTO {
         categoryName = c.getName();
         news = c.getNews();
     }
+
 }
