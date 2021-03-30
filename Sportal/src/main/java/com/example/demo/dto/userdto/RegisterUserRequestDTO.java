@@ -1,18 +1,18 @@
-package com.example.demo.dto;
+package com.example.demo.dto.userdto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-public class EditUserProfileDTO {
+public class RegisterUserRequestDTO {
 
     private long id;
     private String username;
-    private String oldPassword;
-    private String newPassword;
-    private String confirmPassword;
+    private String password;
+    private String confirm;
     private String email;
+
 }

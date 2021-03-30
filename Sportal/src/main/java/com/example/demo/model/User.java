@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.EditUserProfileDTO;
-import com.example.demo.dto.RegisterUserRequestDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.demo.dto.userdto.EditUserProfileDTO;
+import com.example.demo.dto.userdto.RegisterUserRequestDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

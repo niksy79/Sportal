@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.userdto.*;
 import com.example.demo.exeptions.AuthenticationException;
 import com.example.demo.exeptions.BadRequestException;
 import com.example.demo.exeptions.NotFoundException;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -106,7 +105,6 @@ public class UserService {
         user.setEmail(profileDTO.getEmail());
         user = userRepository.save(user);
 
-
         return new EditUserResponseDTO(user);
 
     }
@@ -115,7 +113,10 @@ public class UserService {
         Optional<User> oUser = userRepository.findById(id);
         if (oUser.isPresent()) {
             return new UserWithoutPassDTO(oUser.get());
-        } else throw new NotFoundException("User not found");
+        }
+        else {
+            throw new NotFoundException("User not found");
+        }
     }
 
 

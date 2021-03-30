@@ -17,8 +17,6 @@ public class CategoryController extends AbstractController{
     public Category addCategory(@RequestBody Category c){
         return categoryRepository.save(c);
 
-        //TODO да направя нещата през сървиса
-
     }
 
 

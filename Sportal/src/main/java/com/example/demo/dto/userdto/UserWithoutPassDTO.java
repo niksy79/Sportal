@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.userdto;
 
 import com.example.demo.model.News;
 import com.example.demo.model.User;
@@ -17,14 +17,14 @@ public class UserWithoutPassDTO {
     private String username;
     private String email;
     private boolean isAdmin;
-    private int news;
+
 
     public UserWithoutPassDTO(User user){
         id = user.getId();
         username = user.getUsername();
         email = user.getEmail();
         isAdmin = user.getIsAdmin();
-        news = user.getNews().size();
+
         //TODO да направя отделно dto за визуализация на новините
     }
 }

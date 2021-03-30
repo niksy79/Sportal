@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
-import com.example.demo.exeptions.AuthenticationException;
+import com.example.demo.dto.userdto.*;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,21 +1,20 @@
-package com.example.demo.dto;
+package com.example.demo.dto.userdto;
 
 import com.example.demo.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-public class EditUserResponseDTO {
+public class RegisterUserResponseDTO {
 
     private long id;
     private String username;
     private String email;
 
-    public EditUserResponseDTO(User user){
+    public RegisterUserResponseDTO(User user) {
         id = user.getId();
         username = user.getUsername();
         email = user.getEmail();

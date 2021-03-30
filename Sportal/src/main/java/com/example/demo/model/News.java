@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.AddNewsRequestDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.demo.dto.newsdto.AddNewsRequestDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

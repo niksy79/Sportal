@@ -1,8 +1,7 @@
-package com.example.demo.dto;
+package com.example.demo.dto.newsdto;
 
-import com.example.demo.model.Category;
+
 import com.example.demo.model.News;
-import com.example.demo.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
