@@ -43,7 +43,9 @@ public class User {
     private List<News> news;
 
 
-    //private List<Comment> comments;
+    @OneToMany(mappedBy = "commentingUser")
+    @JsonManagedReference
+    private List<Comment> comments;
 
     public User(RegisterUserRequestDTO userRequestDTO){
         id = userRequestDTO.getId();

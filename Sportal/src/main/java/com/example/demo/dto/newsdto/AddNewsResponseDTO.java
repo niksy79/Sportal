@@ -22,6 +22,5 @@ public class AddNewsResponseDTO {
         id = news.getId();
         title = news.getTitle();
         content = news.getContent();
-
     }
 }

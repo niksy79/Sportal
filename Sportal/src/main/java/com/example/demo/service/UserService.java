@@ -1,5 +1,4 @@
 package com.example.demo.service;
-
 import com.example.demo.dto.userdto.*;
 import com.example.demo.exeptions.AuthenticationException;
 import com.example.demo.exeptions.BadRequestException;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -44,6 +42,7 @@ public class UserService {
                 throw new BadRequestException("Password does not match, confirm password");
             }
         }
+
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         User user = new User(userDTO);
@@ -119,5 +118,7 @@ public class UserService {
         }
     }
 
-
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
 }

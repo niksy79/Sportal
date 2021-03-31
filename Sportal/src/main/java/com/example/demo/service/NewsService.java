@@ -1,5 +1,4 @@
 package com.example.demo.service;
-
 import com.example.demo.dto.newsdto.*;
 import com.example.demo.exeptions.BadRequestException;
 import com.example.demo.exeptions.NotFoundException;
@@ -11,12 +10,10 @@ import com.example.demo.model.repository.NewsRepository;
 import com.example.demo.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,9 +43,7 @@ public class NewsService {
                 .stream()
                 .limit(TOP_FIVE_NEWS)
                 .collect(Collectors.toList());
-
         List<AllNewsWithViewsDTO> sortedNews = new ArrayList<>();
-
         for (News n : allNews) {
             sortedNews.add(new AllNewsWithViewsDTO(n));
         }
@@ -93,6 +88,10 @@ public class NewsService {
         return new AddNewsResponseDTO(news);
     }
 
+    public NewsRepository getNewsRepository() {
+        return newsRepository;
+    }
+
     public ReadNewsDTO readRandomNews() {
         List<News> news = newsRepository.findAll();
         Collections.shuffle(news);
@@ -106,5 +105,8 @@ public class NewsService {
         newsRepository.save(n);
 
         return getNews;
+
+
     }
+
 }

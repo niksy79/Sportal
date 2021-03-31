@@ -36,10 +36,13 @@ public class News {
     @JsonManagedReference
     private Category category;
 
-
     @OneToMany(mappedBy = "news")
     @JsonManagedReference
     List<Image> newsImages;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "commentedNews")
+    List<Comment> newsComments;
 
 
     public News(AddNewsRequestDTO requestDTO){
