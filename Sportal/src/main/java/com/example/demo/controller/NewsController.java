@@ -45,7 +45,7 @@ public class NewsController extends AbstractController{
     }
     @GetMapping("/news/{name}")
     public NewsByCategoryDTO getByCategory(@PathVariable String name){
-       Category c = categoryRepository.findByName(name);
+       Category c = categoryRepository.findByNameContaining(name);
        if (c == null){
            throw new NotFoundException("Category not found");
        }

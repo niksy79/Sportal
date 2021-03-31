@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Component
@@ -34,6 +35,11 @@ public class News {
     @JoinColumn(name = "category_id")
     @JsonManagedReference
     private Category category;
+
+
+    @OneToMany(mappedBy = "news")
+    @JsonManagedReference
+    List<Image> newsImages;
 
 
     public News(AddNewsRequestDTO requestDTO){
