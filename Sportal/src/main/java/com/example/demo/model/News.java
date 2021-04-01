@@ -45,6 +45,8 @@ public class News {
     List<Comment> newsComments;
 
 
+
+
     public News(AddNewsRequestDTO requestDTO){
         title = requestDTO.getTitle();
         content = requestDTO.getContent();

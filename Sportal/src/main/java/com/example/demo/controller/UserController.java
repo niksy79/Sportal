@@ -52,5 +52,11 @@ public class UserController extends AbstractController {
         sessionManager.loginUser(ses, responseDTO.getId());
         return responseDTO;
     }
+    @GetMapping("/users/profile/{id}")
+    public UserProfileDTO showUserProfile(@PathVariable long id, HttpSession ses){
+        sessionManager.getLoggedUser(ses);
+
+        return userService.showProfile(id);
+    }
 
 }

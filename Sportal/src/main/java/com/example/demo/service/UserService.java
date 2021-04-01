@@ -138,4 +138,10 @@ public class UserService {
         user.setIsAdmin(false);
         save(user);
     }
+
+    public UserProfileDTO showProfile(long id){
+        User user = getUserById(id);
+
+        return new UserProfileDTO(user);
+    }
 }

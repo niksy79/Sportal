@@ -11,6 +11,8 @@ import com.example.demo.model.User;
 import com.example.demo.model.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -24,8 +26,9 @@ public class CommentService {
     CommentRepository commentRepository;
 
 
+    @Transactional
     public CommentLikeResponseDTO likeUnlikeComment(CommentLikeRequestDTO requestDTO, User user) {
-        Comment likedComment = getComment(requestDTO.getId());
+        Comment likedComment = getCommentById(requestDTO.getId());
         if (!user.getLikedComments().contains(likedComment)) {
             user.getLikedComments().add(likedComment);
             user.getDislikedComments().remove(likedComment);
@@ -33,12 +36,13 @@ public class CommentService {
             user.getLikedComments().remove(likedComment);
         }
         userService.save(user);
+        commentRepository.save(likedComment);
 
         return new CommentLikeResponseDTO(likedComment);
     }
 
     public CommentLikeResponseDTO dislikeComment(CommentLikeRequestDTO requestDTO, User user) {
-        Comment disComment = getComment(requestDTO.getId());
+        Comment disComment = getCommentById(requestDTO.getId());
         if (user.getDislikedComments().contains(disComment)){
             throw new BadRequestException("you already dislike this comment");
         }
@@ -65,12 +69,9 @@ public class CommentService {
         return responseDTO;
     }
 
-    public Comment getComment(long id) {
-        Optional<Comment> likedComment = commentRepository.findById(id);
-        if (likedComment.isEmpty()) {
-            throw new NotFoundException("Comment not found");
-        }
-        return likedComment.get();
+    public void deleteComment(long id){
+        Comment comment = getCommentById(id);
+        commentRepository.delete(comment);
     }
 
     public Comment getCommentById(long id){

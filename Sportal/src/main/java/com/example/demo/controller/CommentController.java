@@ -3,14 +3,13 @@ import com.example.demo.dto.commentdto.CommentAddRequestDTO;
 import com.example.demo.dto.commentdto.CommentAddResponseDTO;
 import com.example.demo.dto.commentdto.CommentLikeRequestDTO;
 import com.example.demo.dto.commentdto.CommentLikeResponseDTO;
-import com.example.demo.exeptions.AuthenticationException;
 import com.example.demo.model.User;
 import com.example.demo.service.CommentService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -20,6 +19,8 @@ public class CommentController extends AbstractController{
     CommentService commentService;
     @Autowired
     SessionManager sessionManager;
+    @Autowired
+    UserService userService;
 
 
     @PutMapping("/comments")
@@ -34,6 +35,16 @@ public class CommentController extends AbstractController{
         User user = sessionManager.getLoggedUser(ses);
 
         return commentService.likeUnlikeComment(requestDTO, user);
+    }
+
+    @PostMapping("/comments/{id}")
+    @Transactional
+    public String delete(@PathVariable long id, HttpSession ses){
+        User user = sessionManager.getLoggedUser(ses);
+        commentService.deleteComment(id);
+        userService.save(user);
+
+        return "comment deleted successfully";
     }
 
     @PostMapping("/comments/dislike")
