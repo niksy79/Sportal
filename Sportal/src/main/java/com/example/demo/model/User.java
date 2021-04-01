@@ -1,5 +1,4 @@
 package com.example.demo.model;
-
 import com.example.demo.dto.userdto.EditUserProfileDTO;
 import com.example.demo.dto.userdto.RegisterUserRequestDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -7,11 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 @Getter
 @Component
@@ -46,6 +45,15 @@ public class User {
     @OneToMany(mappedBy = "commentingUser")
     @JsonManagedReference
     private List<Comment> comments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_like_comments",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "comment_id")}
+    )
+    @JsonManagedReference
+    private List<Comment> likedComments;
 
     public User(RegisterUserRequestDTO userRequestDTO){
         id = userRequestDTO.getId();

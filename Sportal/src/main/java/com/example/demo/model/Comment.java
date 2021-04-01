@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +34,10 @@ public class Comment {
     @JoinColumn(name = "author_id")
     @JsonBackReference
     User commentingUser;
+
+    @ManyToMany(mappedBy = "likedComments")
+    @JsonBackReference
+    private List<User> likers;
 
     public Comment(String content, LocalDateTime createdAt, News commentedNews, User commentingUser) {
         this.content = content;

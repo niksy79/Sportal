@@ -2,6 +2,9 @@ package com.example.demo.util;
 
 import com.example.demo.exeptions.BadRequestException;
 
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
+
 public class Validator {
 
 
@@ -41,6 +44,7 @@ public class Validator {
         }
         return a > 0;
     }
+
 
 
 }
