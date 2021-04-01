@@ -12,14 +12,16 @@ public class CommentLikeResponseDTO {
 
     private String newsTitle;
     private String newsContent;
-    private String content;
+    private String comment;
     private int likes;
+    private int dislikes;
 
     public CommentLikeResponseDTO(Comment c){
         newsTitle = c.getCommentedNews().getTitle();
         newsContent = c.getCommentedNews().getContent();
-        content = c.getContent();
+        comment = c.getContent();
         likes = c.getLikers().size();
+        dislikes = c.getDislikers().size();
 
     }
 }

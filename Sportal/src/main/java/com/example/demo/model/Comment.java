@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -21,7 +22,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String content;
     private LocalDateTime createdAt;
 
@@ -39,10 +40,27 @@ public class Comment {
     @JsonBackReference
     private List<User> likers;
 
+    @ManyToMany(mappedBy = "dislikedComments")
+    @JsonBackReference
+    private List<User> dislikers;
+
     public Comment(String content, LocalDateTime createdAt, News commentedNews, User commentingUser) {
         this.content = content;
         this.createdAt = createdAt;
         this.commentedNews = commentedNews;
         this.commentingUser = commentingUser;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return id == comment.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

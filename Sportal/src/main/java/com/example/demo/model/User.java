@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 
 @Getter
@@ -55,6 +56,15 @@ public class User {
     @JsonManagedReference
     private List<Comment> likedComments;
 
+    @ManyToMany
+    @JoinTable(
+            name = "users_dislike_comments",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "comment_id")}
+    )
+    @JsonManagedReference
+    private List<Comment> dislikedComments;
+
     public User(RegisterUserRequestDTO userRequestDTO){
         id = userRequestDTO.getId();
         username = userRequestDTO.getUsername();
@@ -68,5 +78,18 @@ public class User {
         username = profileDTO.getUsername();
         password = profileDTO.getNewPassword();
         email = profileDTO.getEmail();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
