@@ -118,7 +118,24 @@ public class UserService {
         }
     }
 
-    public UserRepository getUserRepository() {
-        return userRepository;
+    public User getUserById(long id){
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()){
+            throw  new NotFoundException("User not found");
+        }
+        return user.get();
+    }
+
+    public void save(User u){
+        userRepository.save(u);
+    }
+
+    public void deleteUser(long id){
+        User user = getUserById(id);
+        user.setUsername(null);
+        user.setEmail(null);
+        user.setPassword(null);
+        user.setIsAdmin(false);
+        save(user);
     }
 }

@@ -9,71 +9,53 @@ import com.example.demo.model.Comment;
 import com.example.demo.model.News;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.CommentRepository;
-import com.example.demo.model.repository.NewsRepository;
-import com.example.demo.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class CommentService {
     @Autowired
+    NewsService newsService;
+    @Autowired
+    UserService userService;
+    @Autowired
     CommentRepository commentRepository;
-    @Autowired
-    NewsRepository newsRepository;
-
-    @Autowired
-    UserRepository userRepository;
 
 
-    public CommentLikeResponseDTO likeUnlikeComment(CommentLikeRequestDTO requestDTO, User user){
-        Optional<Comment> likedComment = commentRepository.findById(requestDTO.getId());
-        if (likedComment.isEmpty()){
-            throw new NotFoundException("Comment not found");
+    public CommentLikeResponseDTO likeUnlikeComment(CommentLikeRequestDTO requestDTO, User user) {
+        Comment likedComment = getComment(requestDTO.getId());
+        if (!user.getLikedComments().contains(likedComment)) {
+            user.getLikedComments().add(likedComment);
+            user.getDislikedComments().remove(likedComment);
+        } else {
+            user.getLikedComments().remove(likedComment);
         }
-        if (!user.getLikedComments().contains(likedComment.get())){
-            user.getLikedComments().add(likedComment.get());
-        }
-        else {
-            user.getLikedComments().remove(likedComment.get());
-        }
-        userRepository.save(user);
+        userService.save(user);
 
-        return new CommentLikeResponseDTO(likedComment.get());
+        return new CommentLikeResponseDTO(likedComment);
     }
 
-    public CommentLikeResponseDTO dislikeComment(CommentLikeRequestDTO requestDTO, User user){
-        Optional<Comment> disComment = commentRepository.findById(requestDTO.getId());
-
-        if (disComment.isEmpty()){
-            throw new NotFoundException("Comment not found");
-        }
-        if (!user.getLikedComments().contains(disComment.get())){
-            user.getDislikedComments().add(disComment.get());
+    public CommentLikeResponseDTO dislikeComment(CommentLikeRequestDTO requestDTO, User user) {
+        Comment disComment = getComment(requestDTO.getId());
+        if (user.getDislikedComments().contains(disComment)){
+            throw new BadRequestException("you already dislike this comment");
         }
         else {
-            if (user.getDislikedComments().contains(disComment.get())){
-                throw new BadRequestException("you already dislike this comment");
-            }
-            user.getLikedComments().remove(disComment.get());
-            user.getDislikedComments().add(disComment.get());
+            user.getDislikedComments().add(disComment);
+            user.getLikedComments().remove(disComment);
         }
-        userRepository.save(user);
+        userService.save(user);
 
-        return new CommentLikeResponseDTO(disComment.get());
+        return new CommentLikeResponseDTO(disComment);
     }
 
 
     public CommentAddResponseDTO writeComment(CommentAddRequestDTO requestDTO, User loggedUser) {
-
-        if (newsRepository.findById(requestDTO.getNewsId()).isEmpty()){
-            throw new NotFoundException("Article not found");
-        }
-        News news = newsRepository.findById(requestDTO.getNewsId()).get();
+        News news = newsService.getByID(requestDTO.getNewsId());
         Comment comment = new Comment(requestDTO.getText(), LocalDateTime.now(), news, loggedUser);
-        if (comment.getContent().isEmpty()){
+        if (comment.getContent().isEmpty()) {
             throw new BadRequestException("Comment must have at least one character");
         }
         CommentAddResponseDTO responseDTO = new CommentAddResponseDTO(news);
@@ -81,5 +63,21 @@ public class CommentService {
         commentRepository.save(comment);
 
         return responseDTO;
+    }
+
+    public Comment getComment(long id) {
+        Optional<Comment> likedComment = commentRepository.findById(id);
+        if (likedComment.isEmpty()) {
+            throw new NotFoundException("Comment not found");
+        }
+        return likedComment.get();
+    }
+
+    public Comment getCommentById(long id){
+        Optional<Comment> comment = commentRepository.findById(id);
+        if (comment.isEmpty()){
+            throw new NotFoundException("Comment not found");
+        }
+        return comment.get();
     }
 }
