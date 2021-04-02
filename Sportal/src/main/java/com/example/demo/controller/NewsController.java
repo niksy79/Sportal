@@ -48,9 +48,6 @@ public class NewsController extends AbstractController{
     @GetMapping("/news/{name}")
     public NewsByCategoryDTO getByCategory(@PathVariable String name){
        Category c = categoryService.findByName(name);
-       if (c == null){
-           throw new NotFoundException("Category not found");
-       }
        return new NewsByCategoryDTO(c);
     }
 
@@ -68,6 +65,11 @@ public class NewsController extends AbstractController{
         return newsService.readRandomNews();
     }
 
+    @GetMapping("/news/latest")
+    public List<ReadNewsDTO> latest(){
+        return newsService.latestNews();
+    }
+
     @PostMapping("/news/edit")
     public AddNewsResponseDTO edit(@RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
         User loggedUser = sessionManager.getLoggedUser(ses);
@@ -75,17 +77,13 @@ public class NewsController extends AbstractController{
        return newsService.editNews(requestDTO);
     }
 
-
-
-
-
-
-
-
-
-
-
-
+    @PostMapping("/news/{id}/delete")
+    public String delete(@PathVariable long id, HttpSession ses){
+        User user = sessionManager.getLoggedUser(ses);
+        userService.checkIsUserAdmin(user);
+        newsService.deleteNews(id);
+        return "News was deleted successfully";
+    }
 
 
 }

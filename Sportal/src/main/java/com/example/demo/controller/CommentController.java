@@ -9,8 +9,8 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class CommentController extends AbstractController{
@@ -45,6 +45,11 @@ public class CommentController extends AbstractController{
         userService.save(user);
 
         return "comment deleted successfully";
+    }
+
+    @GetMapping("/comments/top")
+    public List<CommentLikeResponseDTO> topTenLikedComments(){
+        return commentService.mostLikedComments();
     }
 
     @PostMapping("/comments/dislike")

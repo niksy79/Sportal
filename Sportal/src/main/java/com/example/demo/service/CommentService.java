@@ -14,10 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class CommentService {
+public class CommentService implements ICommentService {
     @Autowired
     NewsService newsService;
     @Autowired
@@ -67,6 +71,24 @@ public class CommentService {
         commentRepository.save(comment);
 
         return responseDTO;
+    }
+
+    @Override
+    public List<CommentLikeResponseDTO> mostLikedComments() {
+        List<Comment> allLiked = commentRepository.findAll()
+                .stream()
+                .filter(o1 -> o1.getLikers().size()> 0)
+                .collect(Collectors.toList());
+        List<CommentLikeResponseDTO> topComments = new ArrayList<>();
+        for (Comment c : allLiked){
+            topComments.add(new CommentLikeResponseDTO(c));
+        }
+        List<CommentLikeResponseDTO> top = topComments
+                .stream()
+                .sorted(((o1, o2) -> Long.compare(o2.getLikes(), o1.getLikes())))
+                .limit(10)
+                .collect(Collectors.toList());
+        return top;
     }
 
     public void deleteComment(long id){

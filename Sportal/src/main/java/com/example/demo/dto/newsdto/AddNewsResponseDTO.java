@@ -24,5 +24,6 @@ public class AddNewsResponseDTO {
         title = news.getTitle();
         content = news.getContent();
         categoryName = news.getCategory().getName();
+        views = news.getViews();
     }
 }

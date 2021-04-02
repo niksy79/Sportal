@@ -22,6 +22,8 @@ public interface INewsService {
 
     News getByID(long id);
 
+    List<ReadNewsDTO> latestNews();
+
 
 
 }

@@ -6,10 +6,10 @@ import com.example.demo.model.Category;
 import com.example.demo.model.News;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.NewsRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,6 +74,9 @@ public class NewsService implements INewsService{
         News editedNews = getByID(requestDTO.getId());;
         Category category = categoryService.findByName(requestDTO.getCategoryName());
         if(checkIsValidString(requestDTO) && category.getName().equals(requestDTO.getCategoryName())){
+            editedNews.setTitle(requestDTO.getTitle());
+            editedNews.setContent(requestDTO.getContent());
+            editedNews.setCategory(category);
             categoryService.save(category);
             newsRepository.save(editedNews);
         }
@@ -123,11 +126,29 @@ public class NewsService implements INewsService{
         return news.get();
     }
 
+    @Override
+    public List<ReadNewsDTO>latestNews() {
+        List<News> newsByCreateTime = newsRepository.findByOrderByCreatedAtDesc()
+                .stream()
+                .limit(50)
+                .collect(Collectors.toList());
+        List<ReadNewsDTO> latestNews = new ArrayList<>();
+        for (News n : newsByCreateTime){
+            latestNews.add(new ReadNewsDTO(n));
+        }
+        return latestNews;
+    }
+
     public boolean checkIsValidString(AddNewsRequestDTO requestDTO){
         if (requestDTO.getCategoryName().isEmpty() || requestDTO.getContent().length() < 20
                 || requestDTO.getTitle().length() < 5) {
             throw new BadRequestException("please fill in all fields correctly");
         }
         return true;
+    }
+
+    public void deleteNews(long id){
+        News news = getByID(id);
+        newsRepository.delete(news);
     }
 }
