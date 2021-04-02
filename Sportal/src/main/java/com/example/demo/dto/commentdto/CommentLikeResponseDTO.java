@@ -22,6 +22,5 @@ public class CommentLikeResponseDTO {
         comment = c.getContent();
         likes = c.getLikers().size();
         dislikes = c.getDislikers().size();
-
     }
 }

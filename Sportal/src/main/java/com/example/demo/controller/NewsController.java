@@ -8,7 +8,9 @@ import com.example.demo.model.News;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.CategoryRepository;
 import com.example.demo.model.repository.NewsRepository;
+import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,15 +28,15 @@ public class NewsController extends AbstractController{
     @Autowired
     NewsRepository newsRepository;
     @Autowired
-    CategoryRepository categoryRepository;
+    CategoryService categoryService;
+    @Autowired
+    UserService userService;
 
 
     @PutMapping("/news/add")
     public AddNewsResponseDTO add(@RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
         User u = sessionManager.getLoggedUser(ses);
-        if (!u.getIsAdmin()){
-            throw new AuthenticationException("you do not have permission to write news");
-        }
+        userService.checkIsUserAdmin(u);
         return newsService.addNews(requestDTO, u);
     }
 
@@ -45,7 +47,7 @@ public class NewsController extends AbstractController{
     }
     @GetMapping("/news/{name}")
     public NewsByCategoryDTO getByCategory(@PathVariable String name){
-       Category c = categoryRepository.findByNameContaining(name);
+       Category c = categoryService.findByName(name);
        if (c == null){
            throw new NotFoundException("Category not found");
        }
@@ -54,7 +56,7 @@ public class NewsController extends AbstractController{
 
     @GetMapping("/news/sort")
     public List<AllNewsWithViewsDTO> sortedByViews(){
-        return newsService.viewsDTO();
+        return newsService.topFiveNews();
     }
 
     @GetMapping("/news/filter")
@@ -65,5 +67,25 @@ public class NewsController extends AbstractController{
     public ReadNewsDTO read(){
         return newsService.readRandomNews();
     }
+
+    @PostMapping("/news/edit")
+    public AddNewsResponseDTO edit(@RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
+        User loggedUser = sessionManager.getLoggedUser(ses);
+       userService.checkIsUserAdmin(loggedUser);
+       return newsService.editNews(requestDTO);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

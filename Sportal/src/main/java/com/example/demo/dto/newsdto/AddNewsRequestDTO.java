@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AddNewsRequestDTO {
 
+    private long id;
     private String title;
     private String content;
     private String categoryName;

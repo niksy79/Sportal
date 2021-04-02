@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class UserController extends AbstractController {
@@ -57,6 +58,17 @@ public class UserController extends AbstractController {
         sessionManager.getLoggedUser(ses);
 
         return userService.showProfile(id);
+    }
+
+    @PostMapping("users/delete/{id}")
+    public String deleteUser(@PathVariable long id){
+        userService.deleteUser(id);
+        return "User was deleted successfully";
+    }
+
+    @GetMapping("users/all")
+    public List<User> allUsersWithComments(){
+        return userService.allUsersWithComments();
     }
 
 }

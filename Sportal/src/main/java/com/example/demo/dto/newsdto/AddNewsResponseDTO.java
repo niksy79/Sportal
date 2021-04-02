@@ -14,6 +14,7 @@ public class AddNewsResponseDTO {
     private long id;
     private String title;
     private String content;
+    private String categoryName;
     private long views = 0;
 
 
@@ -22,5 +23,6 @@ public class AddNewsResponseDTO {
         id = news.getId();
         title = news.getTitle();
         content = news.getContent();
+        categoryName = news.getCategory().getName();
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -143,5 +144,16 @@ public class UserService {
         User user = getUserById(id);
 
         return new UserProfileDTO(user);
+    }
+
+    public List<User> allUsersWithComments(){
+       return userRepository.findAll();
+    }
+
+    public boolean checkIsUserAdmin(User u){
+        if (u.getIsAdmin()){
+            return true;
+        }
+        throw new AuthenticationException("Please, log in as administrator");
     }
 }
