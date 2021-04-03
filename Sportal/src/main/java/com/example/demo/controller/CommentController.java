@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,16 +25,14 @@ public class CommentController extends AbstractController{
 
 
     @PutMapping("/comments")
-    public CommentAddResponseDTO add(@RequestBody CommentAddRequestDTO requestDTO, HttpSession ses){
+    public CommentAddResponseDTO add(@Valid @RequestBody CommentAddRequestDTO requestDTO, HttpSession ses){
         User user = sessionManager.getLoggedUser(ses);
-
         return commentService.writeComment(requestDTO, user);
     }
 
     @PostMapping("/comments/like")
     public CommentLikeResponseDTO likeDislike(@RequestBody CommentLikeRequestDTO requestDTO, HttpSession ses){
         User user = sessionManager.getLoggedUser(ses);
-
         return commentService.likeUnlikeComment(requestDTO, user);
     }
 
@@ -43,7 +42,6 @@ public class CommentController extends AbstractController{
         User user = sessionManager.getLoggedUser(ses);
         commentService.deleteComment(id);
         userService.save(user);
-
         return "comment deleted successfully";
     }
 
@@ -55,7 +53,6 @@ public class CommentController extends AbstractController{
     @PostMapping("/comments/dislike")
     public CommentLikeResponseDTO dislike(@RequestBody CommentLikeRequestDTO requestDTO, HttpSession ses){
         User user = sessionManager.getLoggedUser(ses);
-
         return commentService.dislikeComment(requestDTO, user);
     }
 }

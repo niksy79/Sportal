@@ -1,9 +1,7 @@
 package com.example.demo.service;
-
 import com.example.demo.dto.newsdto.*;
 import com.example.demo.model.News;
 import com.example.demo.model.User;
-
 import java.util.List;
 
 public interface INewsService {
@@ -23,7 +21,5 @@ public interface INewsService {
     News getByID(long id);
 
     List<ReadNewsDTO> latestNews();
-
-
 
 }

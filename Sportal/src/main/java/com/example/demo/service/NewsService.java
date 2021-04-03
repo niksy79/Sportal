@@ -6,7 +6,6 @@ import com.example.demo.model.Category;
 import com.example.demo.model.News;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.NewsRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class NewsService implements INewsService{
+public class NewsService implements INewsService {
 
     private static final int TOP_FIVE_NEWS = 5;
     @Autowired
@@ -66,14 +65,12 @@ public class NewsService implements INewsService{
         }
         return filteredNews;
     }
-
-
     @Transactional
     @Override
     public AddNewsResponseDTO editNews(AddNewsRequestDTO requestDTO) {
-        News editedNews = getByID(requestDTO.getId());;
+        News editedNews = getByID(requestDTO.getId());
         Category category = categoryService.findByName(requestDTO.getCategoryName());
-        if(checkIsValidString(requestDTO) && category.getName().equals(requestDTO.getCategoryName())){
+        if (checkIsValidString(requestDTO) && category.getName().equals(requestDTO.getCategoryName())) {
             editedNews.setTitle(requestDTO.getTitle());
             editedNews.setContent(requestDTO.getContent());
             editedNews.setCategory(category);
@@ -87,20 +84,13 @@ public class NewsService implements INewsService{
     public AddNewsResponseDTO addNews(AddNewsRequestDTO requestDTO, User user) {
         News news = new News(requestDTO);
         Category c = categoryService.findByName(requestDTO.getCategoryName());
-
-        if (c == null) {
-            c = new Category(requestDTO.getCategoryName());
-            categoryService.save(c);
+        if (c.getName().equals(requestDTO.getCategoryName())) {
             news.setCategory(c);
+            news.setOwner(user);
+            news.setCreatedAt(LocalDateTime.now());
+            news = newsRepository.save(news);
         }
-       if (checkIsValidString(requestDTO) && c.getName().equals(requestDTO.getCategoryName())){
-           news.setCategory(c);
-           news.setOwner(user);
-           news.setCreatedAt(LocalDateTime.now());
-           news = newsRepository.save(news);
-       }
-
-       return new AddNewsResponseDTO(news);
+        return new AddNewsResponseDTO(news);
     }
 
     public ReadNewsDTO readRandomNews() {
@@ -118,28 +108,28 @@ public class NewsService implements INewsService{
         return getNews;
     }
 
-    public News getByID(long id){
+    public News getByID(long id) {
         Optional<News> news = newsRepository.findById(id);
-        if (news.isEmpty()){
+        if (news.isEmpty()) {
             throw new NotFoundException("news not found");
         }
         return news.get();
     }
 
     @Override
-    public List<ReadNewsDTO>latestNews() {
+    public List<ReadNewsDTO> latestNews() {
         List<News> newsByCreateTime = newsRepository.findByOrderByCreatedAtDesc()
                 .stream()
                 .limit(50)
                 .collect(Collectors.toList());
         List<ReadNewsDTO> latestNews = new ArrayList<>();
-        for (News n : newsByCreateTime){
+        for (News n : newsByCreateTime) {
             latestNews.add(new ReadNewsDTO(n));
         }
         return latestNews;
     }
 
-    public boolean checkIsValidString(AddNewsRequestDTO requestDTO){
+    public boolean checkIsValidString(AddNewsRequestDTO requestDTO) {
         if (requestDTO.getCategoryName().isEmpty() || requestDTO.getContent().length() < 20
                 || requestDTO.getTitle().length() < 5) {
             throw new BadRequestException("please fill in all fields correctly");
@@ -147,7 +137,7 @@ public class NewsService implements INewsService{
         return true;
     }
 
-    public void deleteNews(long id){
+    public void deleteNews(long id) {
         News news = getByID(id);
         newsRepository.delete(news);
     }

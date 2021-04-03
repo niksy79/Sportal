@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,14 +33,12 @@ public class NewsController extends AbstractController{
     @Autowired
     UserService userService;
 
-
     @PutMapping("/news/add")
-    public AddNewsResponseDTO add(@RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
+    public AddNewsResponseDTO add(@Valid @RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
         User u = sessionManager.getLoggedUser(ses);
         userService.checkIsUserAdmin(u);
         return newsService.addNews(requestDTO, u);
     }
-
     @GetMapping("/news")
     public List<NewsByTitleResponseDTO> getByName(@RequestBody NewsByTitleRequestDTO requestDTO){
         return newsService.findByName(requestDTO);
@@ -71,7 +70,7 @@ public class NewsController extends AbstractController{
     }
 
     @PostMapping("/news/edit")
-    public AddNewsResponseDTO edit(@RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
+    public AddNewsResponseDTO edit(@Valid @RequestBody AddNewsRequestDTO requestDTO, HttpSession ses){
         User loggedUser = sessionManager.getLoggedUser(ses);
        userService.checkIsUserAdmin(loggedUser);
        return newsService.editNews(requestDTO);
@@ -84,6 +83,4 @@ public class NewsController extends AbstractController{
         newsService.deleteNews(id);
         return "News was deleted successfully";
     }
-
-
 }

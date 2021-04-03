@@ -1,10 +1,9 @@
 package com.example.demo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @NoArgsConstructor
 @Getter
@@ -13,7 +12,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ErrorDTO {
 
+    private Date timestamp;
     private String msg;
+    private String details;
 
 
 }

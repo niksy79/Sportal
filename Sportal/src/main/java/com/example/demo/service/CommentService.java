@@ -12,10 +12,8 @@ import com.example.demo.model.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,9 +61,6 @@ public class CommentService implements ICommentService {
     public CommentAddResponseDTO writeComment(CommentAddRequestDTO requestDTO, User loggedUser) {
         News news = newsService.getByID(requestDTO.getNewsId());
         Comment comment = new Comment(requestDTO.getText(), LocalDateTime.now(), news, loggedUser);
-        if (comment.getContent().isEmpty()) {
-            throw new BadRequestException("Comment must have at least one character");
-        }
         CommentAddResponseDTO responseDTO = new CommentAddResponseDTO(news);
         responseDTO.setCommentText(requestDTO.getText());
         commentRepository.save(comment);
@@ -83,12 +78,11 @@ public class CommentService implements ICommentService {
         for (Comment c : allLiked){
             topComments.add(new CommentLikeResponseDTO(c));
         }
-        List<CommentLikeResponseDTO> top = topComments
+        return topComments
                 .stream()
                 .sorted(((o1, o2) -> Long.compare(o2.getLikes(), o1.getLikes())))
                 .limit(10)
                 .collect(Collectors.toList());
-        return top;
     }
 
     public void deleteComment(long id){

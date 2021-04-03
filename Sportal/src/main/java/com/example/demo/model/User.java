@@ -1,12 +1,14 @@
 package com.example.demo.model;
+
 import com.example.demo.dto.userdto.EditUserProfileDTO;
 import com.example.demo.dto.userdto.RegisterUserRequestDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +16,6 @@ import java.util.Objects;
 
 
 @Getter
-@Component
 @Setter
 @NoArgsConstructor
 @Entity
@@ -24,17 +25,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column
+
     private String username;
-    @Column
+
     private String password;
-    @Column
     private String email;
-    @Column
     private LocalDate createdAt;
-    @Column
     private LocalDateTime lastLogin;
-    @Column
     private Boolean isAdmin;
 
 
@@ -65,13 +62,21 @@ public class User {
     @JsonManagedReference
     private List<Comment> dislikedComments;
 
-    public User(RegisterUserRequestDTO userRequestDTO){
+    public User(RegisterUserRequestDTO userRequestDTO) {
         id = userRequestDTO.getId();
         username = userRequestDTO.getUsername();
         password = userRequestDTO.getPassword();
         email = userRequestDTO.getEmail();
     }
 
+    public User(String username, String password, String email, LocalDate createdAt, LocalDateTime lastLogin, Boolean isAdmin) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.lastLogin = lastLogin;
+        this.isAdmin = isAdmin;
+    }
 
     public User(EditUserProfileDTO profileDTO) {
         id = profileDTO.getId();

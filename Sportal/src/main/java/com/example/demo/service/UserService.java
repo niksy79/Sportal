@@ -1,15 +1,16 @@
 package com.example.demo.service;
+
 import com.example.demo.dto.userdto.*;
 import com.example.demo.exeptions.AuthenticationException;
 import com.example.demo.exeptions.BadRequestException;
 import com.example.demo.exeptions.NotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.UserRepository;
-import com.example.demo.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,70 +23,48 @@ public class UserService {
     UserRepository userRepository;
 
     public RegisterUserResponseDTO addUser(RegisterUserRequestDTO userDTO) {
+
         if (userRepository.findByEmail(userDTO.getEmail()) != null) {
             throw new BadRequestException("Email already exist");
-        } else {
-            if (!Validator.validEMail(userDTO.getEmail())) {
-                throw new BadRequestException("Invalid email");
-            }
         }
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
             throw new BadRequestException("Username already exist");
-        } else {
-            if (!Validator.validUsername(userDTO.getUsername())) {
-                throw new BadRequestException("Username must be at least 6 characters, without spaces");
-            }
         }
-        if (!Validator.validPassword(userDTO.getPassword())) {
-            throw new BadRequestException("Password must be at least 5 characters, without spaces");
-        } else {
-            if (!userDTO.getPassword().equals(userDTO.getConfirm())) {
-                throw new BadRequestException("Password does not match, confirm password");
-            }
+        if (!userDTO.getPassword().equals(userDTO.getConfirm())) {
+            throw new BadRequestException("Password does not match, confirm password");
         }
-
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
-        User user = new User(userDTO);
-        user.setCreatedAt(LocalDate.now());
-        user.setLastLogin(LocalDateTime.now());
-        user.setIsAdmin(false);
-        user = userRepository.save(user);
+        User user = new User(userDTO.getUsername(), userDTO.getPassword(),
+                userDTO.getEmail(), LocalDate.now(),LocalDateTime.now(),false);
+        userRepository.save(user);
         return new RegisterUserResponseDTO(user);
     }
 
     public UserWithoutPassDTO login(LoginUserDTO userDTO) {
         User user = userRepository.findByUsername(userDTO.getUsername());
-        if (user == null) {
-            throw new AuthenticationException("Invalid username or password");
+        isUserExist(user);
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (encoder.matches(userDTO.getPassword(), user.getPassword())) {
+            return new UserWithoutPassDTO(user);
         } else {
-            PasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (encoder.matches(userDTO.getPassword(), user.getPassword())) {
-                return new UserWithoutPassDTO(user);
-
-            } else {
-                throw new AuthenticationException("Invalid username or password");
-            }
+            throw new AuthenticationException("Invalid username or password");
         }
+
     }
 
     public UserWithoutPassDTO loginAsAdmin(LoginUserDTO userDTO) {
-        User admin = userRepository.findByUsername(userDTO.getUsername());
-        if (admin == null) {
-            throw new AuthenticationException("Invalid username or password");
+        User user = userRepository.findByUsername(userDTO.getUsername());
+        isUserExist(user);
+        if (!user.getIsAdmin()) {
+            user.setIsAdmin(true);
+            userRepository.save(user);
+        }
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (encoder.matches(userDTO.getPassword(), user.getPassword())) {
+            return new UserWithoutPassDTO(user);
         } else {
-            if (!admin.getIsAdmin()) {
-                admin.setIsAdmin(true);
-                userRepository.save(admin);
-            }
-            PasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (encoder.matches(userDTO.getPassword(), admin.getPassword())) {
-
-                return new UserWithoutPassDTO(admin);
-
-            } else {
-                throw new AuthenticationException("Invalid username or password");
-            }
+            throw new AuthenticationException("Invalid username or password");
         }
     }
 
@@ -113,25 +92,24 @@ public class UserService {
         Optional<User> oUser = userRepository.findById(id);
         if (oUser.isPresent()) {
             return new UserWithoutPassDTO(oUser.get());
-        }
-        else {
+        } else {
             throw new NotFoundException("User not found");
         }
     }
 
-    public User getUserById(long id){
+    public User getUserById(long id) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()){
-            throw  new NotFoundException("User not found");
+        if (user.isEmpty()) {
+            throw new NotFoundException("User not found");
         }
         return user.get();
     }
 
-    public void save(User u){
+    public void save(User u) {
         userRepository.save(u);
     }
 
-    public void deleteUser(long id){
+    public void deleteUser(long id) {
         User user = getUserById(id);
         user.setUsername(null);
         user.setEmail(null);
@@ -140,20 +118,26 @@ public class UserService {
         save(user);
     }
 
-    public UserProfileDTO showProfile(long id){
+    public UserProfileDTO showProfile(long id) {
         User user = getUserById(id);
 
         return new UserProfileDTO(user);
     }
 
-    public List<User> allUsersWithComments(){
-       return userRepository.findAll();
+    public List<User> allUsersWithComments() {
+        return userRepository.findAll();
     }
 
-    public boolean checkIsUserAdmin(User u){
-        if (u.getIsAdmin()){
+    public boolean checkIsUserAdmin(User u) {
+        if (u.getIsAdmin()) {
             return true;
         }
         throw new AuthenticationException("Please, log in as administrator");
+    }
+
+    public void isUserExist(User user) {
+        if (user == null) {
+            throw new AuthenticationException("Wrong username or password");
+        }
     }
 }
