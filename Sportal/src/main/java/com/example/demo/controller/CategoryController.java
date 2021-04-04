@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
-public class CategoryController extends AbstractController{
+public class CategoryController extends AbstractController {
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -23,11 +23,10 @@ public class CategoryController extends AbstractController{
     UserService userService;
 
     @PutMapping("/category")
-    public String addCategory(@Valid @RequestBody Category c, HttpSession ses){
+    public String addCategory(@Valid @RequestBody Category c, HttpSession ses) {
         User user = sessionManager.getLoggedUser(ses);
         userService.checkIsUserAdmin(user);
         categoryRepository.save(c);
         return "you added category: " + c.getName();
     }
-
 }

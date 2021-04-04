@@ -1,8 +1,6 @@
 package com.example.demo.dto;
-
 import lombok.*;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 
 @NoArgsConstructor

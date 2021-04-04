@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class CommentController extends AbstractController{
+public class CommentController extends AbstractController {
 
     @Autowired
     CommentService commentService;
@@ -25,20 +25,20 @@ public class CommentController extends AbstractController{
 
 
     @PutMapping("/comments")
-    public CommentAddResponseDTO add(@Valid @RequestBody CommentAddRequestDTO requestDTO, HttpSession ses){
+    public CommentAddResponseDTO add(@Valid @RequestBody CommentAddRequestDTO requestDTO, HttpSession ses) {
         User user = sessionManager.getLoggedUser(ses);
         return commentService.writeComment(requestDTO, user);
     }
 
     @PostMapping("/comments/like")
-    public CommentLikeResponseDTO likeDislike(@RequestBody CommentLikeRequestDTO requestDTO, HttpSession ses){
+    public CommentLikeResponseDTO likeDislike(@RequestBody CommentLikeRequestDTO requestDTO, HttpSession ses) {
         User user = sessionManager.getLoggedUser(ses);
         return commentService.likeUnlikeComment(requestDTO, user);
     }
 
     @PostMapping("/comments/{id}")
     @Transactional
-    public String delete(@PathVariable long id, HttpSession ses){
+    public String delete(@PathVariable long id, HttpSession ses) {
         User user = sessionManager.getLoggedUser(ses);
         commentService.deleteComment(id);
         userService.save(user);
@@ -46,12 +46,12 @@ public class CommentController extends AbstractController{
     }
 
     @GetMapping("/comments/top")
-    public List<CommentLikeResponseDTO> topTenLikedComments(){
+    public List<CommentLikeResponseDTO> topTenLikedComments() {
         return commentService.mostLikedComments();
     }
 
     @PostMapping("/comments/dislike")
-    public CommentLikeResponseDTO dislike(@RequestBody CommentLikeRequestDTO requestDTO, HttpSession ses){
+    public CommentLikeResponseDTO dislike(@RequestBody CommentLikeRequestDTO requestDTO, HttpSession ses) {
         User user = sessionManager.getLoggedUser(ses);
         return commentService.dislikeComment(requestDTO, user);
     }

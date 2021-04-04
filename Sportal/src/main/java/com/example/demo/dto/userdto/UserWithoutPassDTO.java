@@ -1,12 +1,10 @@
 package com.example.demo.dto.userdto;
-
-import com.example.demo.model.News;
 import com.example.demo.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+
 
 @Getter
 @Setter

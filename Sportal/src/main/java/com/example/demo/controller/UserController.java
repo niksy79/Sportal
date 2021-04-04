@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import com.example.demo.dto.userdto.*;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
@@ -7,13 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class UserController extends AbstractController{
+public class UserController extends AbstractController {
 
     @Autowired
     UserService userService;
@@ -56,15 +54,16 @@ public class UserController extends AbstractController{
         sessionManager.loginUser(ses, responseDTO.getId());
         return responseDTO;
     }
+
     @GetMapping("/users/profile/{id}")
-    public UserProfileDTO showUserProfile(@PathVariable long id, HttpSession ses){
+    public UserProfileDTO showUserProfile(@PathVariable long id, HttpSession ses) {
         sessionManager.getLoggedUser(ses);
 
         return userService.showProfile(id);
     }
 
     @PostMapping("users/delete/{id}")
-    public String deleteUser(@PathVariable long id, HttpSession ses){
+    public String deleteUser(@PathVariable long id, HttpSession ses) {
         User u = sessionManager.getLoggedUser(ses);
         userService.checkIsUserAdmin(u);
         userService.deleteUser(id);
@@ -72,7 +71,7 @@ public class UserController extends AbstractController{
     }
 
     @GetMapping("users/all")
-    public List<User> allUsersWithComments(){
+    public List<User> allUsersWithComments() {
         return userService.allUsersWithComments();
     }
 
@@ -81,5 +80,4 @@ public class UserController extends AbstractController{
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
-
 }

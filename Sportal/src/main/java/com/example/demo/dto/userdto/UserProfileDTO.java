@@ -1,14 +1,9 @@
 package com.example.demo.dto.userdto;
-
-import com.example.demo.dto.commentdto.CommentAddResponseDTO;
-import com.example.demo.dto.newsdto.NewsByTitleResponseDTO;
-import com.example.demo.model.Comment;
 import com.example.demo.model.News;
 import com.example.demo.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
@@ -24,8 +19,6 @@ public class UserProfileDTO {
     public UserProfileDTO(User user){
         username = user.getUsername();
         news = user.getNews();
-
-
 
     }
 

@@ -14,10 +14,9 @@ public class CommentAddResponseDTO {
     private String newsContent;
     private String commentText;
 
-    public CommentAddResponseDTO(News n){
+    public CommentAddResponseDTO(News n) {
         newsTitle = n.getTitle();
         newsContent = n.getContent();
-
     }
 
 }

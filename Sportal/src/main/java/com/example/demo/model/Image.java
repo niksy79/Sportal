@@ -1,13 +1,9 @@
 package com.example.demo.model;
-
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 @Component
 @Setter

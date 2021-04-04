@@ -45,9 +45,6 @@ public class Comment {
         this.commentedNews = commentedNews;
         this.commentingUser = commentingUser;
     }
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,7 +52,6 @@ public class Comment {
         Comment comment = (Comment) o;
         return id == comment.id;
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id);

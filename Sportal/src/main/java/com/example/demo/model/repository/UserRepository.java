@@ -10,8 +10,11 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByEmail(String email);
     User findByUsername(String username);
+    Boolean existsByEmail(String email);
+    Boolean existsByUsername(String username);
+
+    Boolean findByIsAdminIsTrue();
 
     @Query("SELECT user FROM User user JOIN Comment comment ON user.id = comment.commentingUser.id")
     List<User> findAll();

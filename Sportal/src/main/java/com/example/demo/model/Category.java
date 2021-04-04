@@ -20,7 +20,6 @@ public class Category {
     private int id;
     @NotEmpty
     private String name;
-
     @OneToMany(mappedBy = "category")
     @JsonBackReference
     private List<News> news;

@@ -1,5 +1,4 @@
 package com.example.demo.service;
-
 import com.example.demo.dto.userdto.*;
 import com.example.demo.exeptions.AuthenticationException;
 import com.example.demo.exeptions.BadRequestException;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,10 +22,10 @@ public class UserService {
 
     public RegisterUserResponseDTO addUser(RegisterUserRequestDTO userDTO) {
 
-        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new BadRequestException("Email already exist");
         }
-        if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
             throw new BadRequestException("Username already exist");
         }
         if (!userDTO.getPassword().equals(userDTO.getConfirm())) {

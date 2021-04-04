@@ -1,14 +1,9 @@
 package com.example.demo.model;
-
-import com.example.demo.dto.userdto.EditUserProfileDTO;
-import com.example.demo.dto.userdto.RegisterUserRequestDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,20 +20,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String username;
-
     private String password;
     private String email;
     private LocalDate createdAt;
     private LocalDateTime lastLogin;
     private Boolean isAdmin;
 
-
     @OneToMany(mappedBy = "owner")
     @JsonManagedReference
     private List<News> news;
-
 
     @OneToMany(mappedBy = "commentingUser")
     @JsonManagedReference
@@ -62,13 +53,6 @@ public class User {
     @JsonManagedReference
     private List<Comment> dislikedComments;
 
-    public User(RegisterUserRequestDTO userRequestDTO) {
-        id = userRequestDTO.getId();
-        username = userRequestDTO.getUsername();
-        password = userRequestDTO.getPassword();
-        email = userRequestDTO.getEmail();
-    }
-
     public User(String username, String password, String email, LocalDate createdAt, LocalDateTime lastLogin, Boolean isAdmin) {
         this.username = username;
         this.password = password;
@@ -76,13 +60,6 @@ public class User {
         this.createdAt = createdAt;
         this.lastLogin = lastLogin;
         this.isAdmin = isAdmin;
-    }
-
-    public User(EditUserProfileDTO profileDTO) {
-        id = profileDTO.getId();
-        username = profileDTO.getUsername();
-        password = profileDTO.getNewPassword();
-        email = profileDTO.getEmail();
     }
 
     @Override

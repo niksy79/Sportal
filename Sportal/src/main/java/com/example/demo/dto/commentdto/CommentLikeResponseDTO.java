@@ -1,5 +1,4 @@
 package com.example.demo.dto.commentdto;
-
 import com.example.demo.model.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

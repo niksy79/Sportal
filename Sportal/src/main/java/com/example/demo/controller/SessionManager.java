@@ -1,11 +1,9 @@
 package com.example.demo.controller;
-
 import com.example.demo.exeptions.AuthenticationException;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpSession;
 
 @Component
@@ -16,14 +14,12 @@ public class SessionManager {
     private UserRepository userRepository;
 
     public User getLoggedUser(HttpSession session) {
-        if (session.getAttribute(LOGGED_USER_ID) == null){
+        if (session.getAttribute(LOGGED_USER_ID) == null) {
             throw new AuthenticationException("You have to log in");
-        }
-        else {
+        } else {
             long userId = (long) session.getAttribute(LOGGED_USER_ID);
             return userRepository.findById(userId).get();
         }
-
     }
 
     public void loginUser(HttpSession ses, long id) {
