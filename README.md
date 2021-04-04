@@ -40,7 +40,7 @@ _my first spring web app_
 - _most liked comments_
 # ==================
 
-## Design patterns
+# Design patterns
 
 - _singleton_
 - _MVC_
