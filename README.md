@@ -1,5 +1,8 @@
 # Sportal
 _my first spring web app_
+:running:
+:basketball_man:
+:skier:
 
 # ==================
 
