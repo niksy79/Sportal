@@ -56,6 +56,7 @@ _my first spring web app_
 - __Java persistence with JPA and Hibernate__
 - __Java Bean Validation__
 - __Maven__
+- __Bcrypt__
 # ==================
 
 # Used software
