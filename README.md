@@ -48,5 +48,6 @@ my first spring web app
 
 # My database diagram
 
+![SportalDB_diagram](https://user-images.githubusercontent.com/73641911/113506229-3d187c00-954c-11eb-909f-f2b27bf35d7b.JPG)
 
 
