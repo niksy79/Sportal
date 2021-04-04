@@ -19,6 +19,8 @@ my first spring web app
 - edit profile
 - view profile details
 - delete comments
+- login
+- logout
 
 # admin
 
@@ -26,6 +28,7 @@ my first spring web app
 - upload images
 - edit articles
 - delete user
+- login as admin
 
 # articles
 
