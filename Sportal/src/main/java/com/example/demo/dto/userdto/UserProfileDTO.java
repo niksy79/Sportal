@@ -19,7 +19,6 @@ public class UserProfileDTO {
     public UserProfileDTO(User user){
         username = user.getUsername();
         news = user.getNews();
-
     }
 
 

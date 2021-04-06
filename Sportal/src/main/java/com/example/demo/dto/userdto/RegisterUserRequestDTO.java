@@ -26,5 +26,4 @@ public class RegisterUserRequestDTO {
     private String email;
 
 
-
 }

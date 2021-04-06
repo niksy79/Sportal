@@ -37,14 +37,4 @@ public class AbstractController {
         return new ErrorDTO(new Date(), "Validation error", e.getMessage());
 
     }
-
-  /*  @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDTO customValidationErrorHandling(MethodArgumentNotValidException e) {
-
-     return new ErrorDTO(new Date(), "Validation error",
-        Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
-    }*/
-
-
 }

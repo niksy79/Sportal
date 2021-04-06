@@ -18,8 +18,7 @@ public class AddNewsResponseDTO {
     private long views = 0;
 
 
-
-    public  AddNewsResponseDTO(News news){
+    public AddNewsResponseDTO(News news) {
         id = news.getId();
         title = news.getTitle();
         content = news.getContent();

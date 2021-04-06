@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Category;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.CategoryRepository;
+import com.example.demo.service.SessionManager;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;

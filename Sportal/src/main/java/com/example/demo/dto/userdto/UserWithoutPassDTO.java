@@ -1,9 +1,9 @@
 package com.example.demo.dto.userdto;
+
 import com.example.demo.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 
 @Getter
@@ -17,12 +17,10 @@ public class UserWithoutPassDTO {
     private boolean isAdmin;
 
 
-    public UserWithoutPassDTO(User user){
+    public UserWithoutPassDTO(User user) {
         id = user.getId();
         username = user.getUsername();
         email = user.getEmail();
         isAdmin = user.getIsAdmin();
-
-        //TODO да направя отделно dto за визуализация на новините
     }
 }

@@ -18,6 +18,5 @@ public class ReadNewsDTO {
         title = news.getTitle();
         content = news.getContent();
         views = news.getViews();
-
     }
 }

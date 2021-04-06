@@ -1,14 +1,17 @@
 package com.example.demo.controller;
+
 import com.example.demo.dto.commentdto.CommentAddRequestDTO;
 import com.example.demo.dto.commentdto.CommentAddResponseDTO;
 import com.example.demo.dto.commentdto.CommentLikeRequestDTO;
 import com.example.demo.dto.commentdto.CommentLikeResponseDTO;
 import com.example.demo.model.User;
 import com.example.demo.service.CommentService;
+import com.example.demo.service.SessionManager;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;

@@ -17,7 +17,6 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String url;
-
     @ManyToOne
     @JoinColumn(name = "news_id")
     @JsonBackReference

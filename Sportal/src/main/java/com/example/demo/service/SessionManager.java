@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.service;
 import com.example.demo.exeptions.AuthenticationException;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.UserRepository;

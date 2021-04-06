@@ -1,4 +1,5 @@
 package com.example.demo.dto.commentdto;
+
 import com.example.demo.model.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class CommentLikeResponseDTO {
     private int likes;
     private int dislikes;
 
-    public CommentLikeResponseDTO(Comment c){
+    public CommentLikeResponseDTO(Comment c) {
         newsTitle = c.getCommentedNews().getTitle();
         newsContent = c.getCommentedNews().getContent();
         comment = c.getContent();

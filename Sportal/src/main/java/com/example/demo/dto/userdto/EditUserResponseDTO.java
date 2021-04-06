@@ -15,7 +15,7 @@ public class EditUserResponseDTO {
     private String username;
     private String email;
 
-    public EditUserResponseDTO(User user){
+    public EditUserResponseDTO(User user) {
         id = user.getId();
         username = user.getUsername();
         email = user.getEmail();

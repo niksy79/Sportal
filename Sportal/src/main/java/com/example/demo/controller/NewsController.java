@@ -1,13 +1,16 @@
 package com.example.demo.controller;
+
 import com.example.demo.dto.newsdto.*;
 import com.example.demo.model.Category;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.NewsRepository;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.NewsService;
+import com.example.demo.service.SessionManager;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -32,16 +35,19 @@ public class NewsController extends AbstractController {
         userService.checkIsUserAdmin(u);
         return newsService.addNews(requestDTO, u);
     }
+
     @GetMapping("/news")
     public List<NewsByTitleResponseDTO> getByName(@RequestBody NewsByTitleRequestDTO requestDTO) {
         return newsService.findByName(requestDTO);
 
     }
+
     @GetMapping("/news/{name}")
     public NewsByCategoryDTO getByCategory(@PathVariable String name) {
         Category c = categoryService.findByName(name);
         return new NewsByCategoryDTO(c);
     }
+
     @GetMapping("/news/sort")
     public List<AllNewsWithViewsDTO> sortedByViews() {
         return newsService.topFiveNews();
@@ -51,6 +57,7 @@ public class NewsController extends AbstractController {
     public List<NewsByCategoryAndTitleDTO> byNameAndCategory(@RequestBody NewsSearchRequestDTO requestDTO) {
         return newsService.filter(requestDTO);
     }
+
     @GetMapping("/news/read/news")
     public ReadNewsDTO read() {
         return newsService.readRandomNews();
@@ -67,6 +74,7 @@ public class NewsController extends AbstractController {
         userService.checkIsUserAdmin(loggedUser);
         return newsService.editNews(requestDTO);
     }
+
     @PostMapping("/news/{id}/delete")
     public String delete(@PathVariable long id, HttpSession ses) {
         User user = sessionManager.getLoggedUser(ses);

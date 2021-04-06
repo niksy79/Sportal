@@ -15,13 +15,10 @@ public class NewsByCategoryAndTitleDTO {
     private long views;
     private String categoryName;
 
-    public NewsByCategoryAndTitleDTO(News news){
+    public NewsByCategoryAndTitleDTO(News news) {
         title = news.getTitle();
         content = news.getContent();
         views = news.getViews();
         categoryName = news.getCategory().getName();
     }
-
-
-
 }

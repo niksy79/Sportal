@@ -1,11 +1,14 @@
 package com.example.demo.controller;
+
 import com.example.demo.dto.userdto.*;
 import com.example.demo.model.User;
+import com.example.demo.service.SessionManager;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
