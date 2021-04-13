@@ -23,8 +23,6 @@ public class NewsController extends AbstractController {
     @Autowired
     SessionManager sessionManager;
     @Autowired
-    NewsRepository newsRepository;
-    @Autowired
     CategoryService categoryService;
     @Autowired
     UserService userService;

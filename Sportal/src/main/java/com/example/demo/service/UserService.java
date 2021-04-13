@@ -95,12 +95,9 @@ public class UserService {
         }
     }
 
-    public User getUserById(long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new NotFoundException("User not found");
-        }
-        return user.get();
+    public User getUserById(long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User by id " + id + " was not found"));
     }
 
     public void save(User u) {

@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class AddNewsRequestDTO {
 
-    private long id;
     @NotBlank
     @Size(min = 5, max = 50, message = "title must be between 5 and 50 characters")
     private String title;

@@ -70,7 +70,7 @@ public class NewsService implements INewsService {
     public AddNewsResponseDTO editNews(AddNewsRequestDTO requestDTO) {
         News editedNews = getByID(requestDTO.getId());
         Category category = categoryService.findByName(requestDTO.getCategoryName());
-        if (checkIsValidString(requestDTO) && category.getName().equals(requestDTO.getCategoryName())) {
+        if (category.getName().equals(requestDTO.getCategoryName())) {
             editedNews.setTitle(requestDTO.getTitle());
             editedNews.setContent(requestDTO.getContent());
             editedNews.setCategory(category);
@@ -127,14 +127,6 @@ public class NewsService implements INewsService {
             latestNews.add(new ReadNewsDTO(n));
         }
         return latestNews;
-    }
-
-    public boolean checkIsValidString(AddNewsRequestDTO requestDTO) {
-        if (requestDTO.getCategoryName().isEmpty() || requestDTO.getContent().length() < 20
-                || requestDTO.getTitle().length() < 5) {
-            throw new BadRequestException("please fill in all fields correctly");
-        }
-        return true;
     }
 
     public void deleteNews(long id) {

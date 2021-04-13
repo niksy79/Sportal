@@ -6,6 +6,8 @@ import com.example.demo.service.SessionManager;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,12 +67,12 @@ public class UserController extends AbstractController {
         return userService.showProfile(id);
     }
 
-    @PostMapping("users/delete/{id}")
-    public String deleteUser(@PathVariable long id, HttpSession ses) {
+    @DeleteMapping("users/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable long id, HttpSession ses) {
         User u = sessionManager.getLoggedUser(ses);
         userService.checkIsUserAdmin(u);
         userService.deleteUser(id);
-        return "User was deleted successfully";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("users/all")
